@@ -11,9 +11,13 @@ function startChangeColor() {
   btnChangeColors = setInterval(() => {
     document.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
+  button.btnStart.setAttribute('disabled', true);
+  button.btnStop.removeAttribute('disabled');
 }
 function stopChangeColor() {
   clearInterval(btnChangeColors);
+  button.btnStart.removeAttribute('disabled');
+  button.btnStop.setAttribute('disabled', true);
 }
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
