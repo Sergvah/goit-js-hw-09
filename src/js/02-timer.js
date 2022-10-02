@@ -7,7 +7,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 const TIMER_DEADLINE = new Date();
 let selectedDate;
 const btnStart = document.querySelector('[data-start]');
-//   timerRef: document.querySelector('.timer'),
+const timerRef = document.querySelector('.timer');
 //   days: document.querySelector('.value[data-days]'),
 //   hours: document.querySelector('.value[data-hours]'),
 //   mins: document.querySelector('.value[data-minutes]'),
@@ -52,19 +52,27 @@ const timer = {
     this.intervalId = setInterval(() => {
       const ms = selectedDate.getTime() - Date.now();
 
+      if (ms <= 1000) {
+        clearInterval(this.intervalId);
+      }
+
       const dataRefs = this.convertMs(ms);
-      this.refs.days.textContent = dataRefs.days;
-      this.refs.hours.textContent = dataRefs.hours;
-      this.refs.minutes.textContent = dataRefs.minutes;
-      this.refs.seconds.textContent = dataRefs.seconds;
+      this.refs.days.textContent = this.addLeadingZero(dataRefs.days);
+      this.refs.hours.textContent = this.addLeadingZero(dataRefs.hours);
+      this.refs.minutes.textContent = this.addLeadingZero(dataRefs.minutes);
+      this.refs.seconds.textContent = this.addLeadingZero(dataRefs.seconds);
     }, 1000);
-    console.log(dataRefs);
+    // console.log(dataRefs);
   },
   getRefs(rootSelector) {
     this.refs.days = document.querySelector('[data-days]');
     this.refs.hours = document.querySelector('[data-hours]');
     this.refs.minutes = document.querySelector('[data-minutes]');
     this.refs.seconds = document.querySelector('[data-seconds]');
+  },
+
+  addLeadingZero(value) {
+    return String(value).padStart(2, '0');
   },
 
   convertMs(ms) {
@@ -91,7 +99,7 @@ const timer = {
   // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 };
 btnStart.addEventListener('click', () => {
-  timer.start(refs.timerRef, selectedDate);
+  timer.start(timerRef, selectedDate);
 });
 
 function addLeadingZero(value) {
